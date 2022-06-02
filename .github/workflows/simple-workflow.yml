@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Do it
         run: |
-          echo "if: ${{ needs.check-for-changes.outputs.run_job }}"
+          echo "if: ${{ needs.check-for-changes.outputs }}"
           echo "Doing the publish thing"
         shell: bash
         
