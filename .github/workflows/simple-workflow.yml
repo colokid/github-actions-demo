@@ -10,7 +10,7 @@ jobs:
   check-for-changes:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.check-step.outputs.run_job }}
+      run_job: ${{ steps.check-step.outputs.run_job }}
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v3
@@ -32,7 +32,7 @@ jobs:
 
   publish:
     needs: [ check-for-changes ]
-    if: ${{ needs.check-for-changes.outputs.output1 == 'true' }}
+    if: ${{ needs.check-for-changes.outputs.run_job == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repo
