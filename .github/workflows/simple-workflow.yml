@@ -2,13 +2,13 @@ name: Publish on changes
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+
+env:
+  TAG_PATTERN: package-
 
 jobs:
-  
   check-for-changes:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v3
@@ -17,20 +17,13 @@ jobs:
         uses: jitterbit/get-changed-files@v1
       - name: Check for changed files
         run: |
-          echo "Checking for files"
           for file in ${{ steps.files.outputs.all }}; do
-            echo "Checking file: ${file}";
             if [[ ${file} = .github/* ]]; then
-               echo "File matches pattern";
                echo "::set-output name=run_job::true";
                break;
-            else
-               echo "File does not match pattern";
             fi
           done;
-          echo "Done checking for files"
-      - name: Run a one-line script
-        run: echo Hello, world!
+        shell: bash
 
   publish:
     needs: [ check-for-changes ]
