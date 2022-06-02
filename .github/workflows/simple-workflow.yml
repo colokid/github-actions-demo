@@ -18,7 +18,9 @@ jobs:
       - name: Check for changed files
         run: |
           for file in ${{ steps.files.outputs.all }}; do
+            echo "Running check on file: ${file}"
             if [[ ${file} = .github/* ]]; then
+               echo "File matches";
                echo "::set-output name=run_job::true";
                break;
             fi
