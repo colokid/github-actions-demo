@@ -1,22 +1,51 @@
-name: CI
+name: Publish on changes
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  build:
+  
+  check-for-changes:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
+      - name: Checkout current repo
+        uses: actions/checkout@v3
+      - name: Get file changes
+        id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: Check for changed files
+        run: |
+          echo "Checking for files"
+          for file in ${{ steps.files.outputs.all }}; do
+            echo "Checking file: ${file}";
+            if [[ ${file} = .github/* ]]; then
+               echo "File matches pattern";
+               echo "::set-output name=run_job::true";
+               break;
+            else
+               echo "File does not match pattern";
+            fi
+          done;
+          echo "Done checking for files"
       - name: Run a one-line script
         run: echo Hello, world!
 
-      - name: Run a multi-line script
+  publish:
+    needs: [ check-for-changes ]
+    if: needs.check-for-changes.outputs.run_job == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v3
+      - name: Do it
+        run: |
+          echo "Doing the publish thing"
+        shell: bash
+        
+    
+      - name: Do the push to npm
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
