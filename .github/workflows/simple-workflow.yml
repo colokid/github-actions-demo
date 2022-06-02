@@ -32,13 +32,13 @@ jobs:
 
   publish:
     needs: [ check-for-changes ]
+    if: ${{ needs.check-for-changes.outputs.output1 == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v3
       - name: Do it
         run: |
-          echo "if: ${{ needs.check-for-changes.outputs.output1 }}"
           echo "Doing the publish thing"
         shell: bash
         
