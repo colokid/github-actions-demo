@@ -29,7 +29,7 @@ jobs:
 
   publish:
     needs: [ check-for-changes ]
-    if: needs.check-for-changes.outputs.run_job == 'true'
+    if: ${{ needs.check-for-changes.outputs.run_job == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repo
