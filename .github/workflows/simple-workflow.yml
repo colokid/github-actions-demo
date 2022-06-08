@@ -40,10 +40,11 @@ jobs:
       - name: Do it
         run: |
           echo "Doing the publish thing"
+          ENV=PROD
+          echo "Setting do it ENV=${ENV}
         shell: bash
-        
-    
       - name: Do the push to npm
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          echo In Do the push with ENV=${ENV}
