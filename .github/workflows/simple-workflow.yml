@@ -43,10 +43,10 @@ jobs:
           echo "Doing the publish thing"
           export ENV=PROD
           echo Setting do it ENV=${ENV}
-          echo "::set-output name=do-it::${ENV}";
+          echo "::set-output name=di-env::${ENV}";
         shell: bash
       - name: Do the push to npm
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo In Do the push with ENV=${{ steps.do-it.outputs.ENV }}
+          echo In Do the push with ENV=${{ steps.do-it.outputs.di-env }}
