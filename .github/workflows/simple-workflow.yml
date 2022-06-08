@@ -38,6 +38,7 @@ jobs:
       - name: Checkout current repo
         uses: actions/checkout@v3
       - name: Do it
+        id: do-it
         run: |
           echo "Doing the publish thing"
           export ENV=PROD
@@ -47,4 +48,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo In Do the push with ENV=${ENV}
+          echo In Do the push with ENV=${{ steps.do-it.outputs.ENV }}
