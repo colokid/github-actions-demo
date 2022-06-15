@@ -22,8 +22,8 @@ jobs:
       - name: Deploy the PR specific stack
         id: deploy
         run: |
-          echo Doing the deploy of the stack ${{ STACK_PREFIX }} ...
-          echo "::set-output name=url::http://www.example.com/${{ STACK_PREFIX }}"
+          echo Doing the deploy of the stack ${STACK_PREFIX} ...
+          echo "::set-output name=url::http://www.example.com/${STACK_PREFIX}"
         shell: bash
       - name: test deploy
         run: |
