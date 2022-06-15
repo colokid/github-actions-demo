@@ -1,0 +1,32 @@
+name: Validate code in Pull Request
+
+on:
+  pull_request:
+    branches: [ main ]
+
+env:
+  STACK_PREFIX: PMTDSA-${{ GITHUB_REF }}
+
+jobs:
+  deploy-stack:
+    runs-on: ubuntu-latest
+    outputs:
+      test-url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - name: Checkout PR commits
+        uses: actions/checkout@v2
+      - name: Set AWS credentials
+        run: |
+          echo Setting up AWS credentials
+        shell: bash
+      - name: Deploy the PR specific stack
+        id: deploy
+        run: |
+          echo Doing the deploy of the stack ${{ STACK_PREFIX }} ...
+          echo "::set-output name=url::http://www.example.com/${{ STACK_PREFIX }}"
+        shell: bash
+      - name: test deploy
+        run: |
+          echo Fetching data from ${{ steps.deploy.outputs.url }}
+          echo Keeping around for cleanup...
+        shell: bash
