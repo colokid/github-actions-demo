@@ -11,8 +11,8 @@ env:
 jobs:
   deploy-stack:
     runs-on: ubuntu-latest
-  steps:
-    - name: Clean up deployment
-      run: |
-        echo Cleaning up stack with prefix of ${{ STACK_PREFIX }}
-      shell: bash
+    steps:
+      - name: Clean up deployment
+        run: |
+          echo Cleaning up stack with prefix of ${{ STACK_PREFIX }}
+        shell: bash
