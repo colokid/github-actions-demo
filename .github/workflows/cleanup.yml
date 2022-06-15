@@ -1,0 +1,18 @@
+name: Cleanup PR artifacts
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+
+env:
+  STACK_PREFIX: PMTDSA-${{ github.event.number }}
+
+jobs:
+  deploy-stack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up deployment
+        run: |
+          echo Cleaning up stack with prefix of ${STACK_PREFIX}
+        shell: bash
