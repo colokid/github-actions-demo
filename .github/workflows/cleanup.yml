@@ -6,7 +6,7 @@ on:
     types: [ closed ]
 
 env:
-  STACK_PREFIX: PMTDSA-${{ GITHUB_REF }}
+  STACK_PREFIX: PMTDSA-${{ github.event.number }}
 
 jobs:
   deploy-stack:

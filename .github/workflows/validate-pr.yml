@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  STACK_PREFIX: PMTDSA-${{ GITHUB_REF }}
+  STACK_PREFIX: PMTDSA-${{ github.event.number }}
 
 jobs:
   deploy-stack:
