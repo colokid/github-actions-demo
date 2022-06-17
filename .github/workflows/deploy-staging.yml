@@ -36,10 +36,14 @@ jobs:
               BUILD_NO=$(echo ${LAST} | cut -d '-' -f 2)
             fi
           fi
+          echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO};
           echo Processing for BUILD_NO=${BUILD_NO}
           FOUND=$(git tag | grep "${BUILD_PREFIX}${BUILD_NO}$")
+          echo FOUND=${FOUND}
           if [[ "${FOUND}" == "" ]]; then
             echo What's going on?
+            echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO};
+            echo "::error::Build ${BUILD_PREFIX}${BUILD_NO} doesn't exist"
           fi
           echo Deploying build ${BUILD_NO} to staging
           echo "::set-output name=target-build::${BUILD_NO}"
