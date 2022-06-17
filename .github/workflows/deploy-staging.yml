@@ -54,14 +54,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.get-tag.outputs.target-tag }}
+          ref: ${{ needs.get-tag-number.outputs.target-tag }}
       - name: Tag build
         run: |
-          echo "s/BUILD_NO/${{ needs.get-tag.outputs.target-build }}/"
+          echo "s/BUILD_NO/${{ needs.get-tag-number.outputs.target-build }}/"
         shell: bash
       - name: Deploy to staging
         run: |
           echo ENVIRONMENT=staging
           echo REGION=us-east-1
-          ENVIRONMENT=staging REGION=us-east-1 --require-approval never
+          ENVIRONMENT=staging REGION=us-east-1 ls
         shell: bash
