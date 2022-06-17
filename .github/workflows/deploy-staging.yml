@@ -27,7 +27,7 @@ jobs:
           BUILD_NO=${{ github.event.inputs.build-no }}
           git fetch --all --tags
           echo Looking for BUILD_NO=${BUILD_NO}
-          if [[ "${BUILD_NO}}" == "" ]]; then
+          if [[ "${BUILD_NO}" == "" ]]; then
             LAST=$(git tag -l --sort=version:refname "${BUILD_PREFIX}*" | tail -1)
             echo LAST=${LAST}
             if [[ "${LAST}" == "" ]]; then
