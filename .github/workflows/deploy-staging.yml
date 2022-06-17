@@ -33,7 +33,7 @@ jobs:
             if [[ "${LAST}" == "" ]]; then
               BUILD_NO=1
             else
-              BUILD_NO=$(echo ${BUILD_NO} | cut -d '-' -f 2)
+              BUILD_NO=$(echo ${LAST} | cut -d '-' -f 2)
             fi
           fi
           echo Processing for BUILD_NO=${BUILD_NO}
