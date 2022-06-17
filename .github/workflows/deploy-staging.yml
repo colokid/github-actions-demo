@@ -39,7 +39,7 @@ jobs:
           echo Processing for BUILD_NO=${BUILD_NO}
           FOUND=$(git tag | grep "${BUILD_PREFIX}${BUILD_NO}$")
           if [[ "${FOUND}" == "" ]]; then
-            echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO}
+            echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO};
             exit -1
           fi
           echo Deploying build ${BUILD_NO} to staging
