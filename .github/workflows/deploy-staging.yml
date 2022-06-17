@@ -17,6 +17,7 @@ jobs:
     outputs:
       target-tag: ${{ steps.get-tag.outputs.target-tag }}
       target-build: ${{ steps.get-tag.outputs.target-build }}
+    if: ${{ github.ref == 'refs/head/main' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,14 +26,17 @@ jobs:
         run: |
           BUILD_NO=${{ github.event.inputs.build-no }}
           git fetch --all --tags
+          echo Looking for BUILD_NO=${BUILD_NO}
           if [[ "${BUILD_NO}}" == "" ]]; then
             LAST=$(git tag -l --sort=version:refname "${BUILD_PREFIX}*" | tail -1)
+            echo LAST=${LAST}
             if [[ "${LAST}" == "" ]]; then
               BUILD_NO=1
             else
               BUILD_NO=$(echo ${BUILD_NO} | cut -d '-' -f 2)
             fi
           fi
+          echo Processing for BUILD_NO=${BUILD_NO}
           FOUND=$(git tag | grep "${BUILD_PREFIX}${BUILD_NO}$")
           if [[ "${FOUND}" == "" ]]; then
             echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO}
