@@ -1,0 +1,63 @@
+name: Deploy the latest build to staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      build-no:
+        description: 'Optionally specify the build number to deploy for rollback'
+        required: false
+        default: ''
+
+env:
+  BUILD_PREFIX: build-
+
+jobs:
+  get-tag-number:
+    runs-on: ubuntu-latest
+    outputs:
+      target-tag: ${{ steps.get-tag.outputs.target-tag }}
+      target-build: ${{ steps.get-tag.outputs.target-build }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get target build number
+        id: get-tag
+        run: |
+          BUILD_NO=${{ github.event.inputs.build-no }}
+          git fetch --all --tags
+          if [[ "${BUILD_NO}}" == "" ]]; then
+            LAST=$(git tag -l --sort=version:refname "${BUILD_PREFIX}*" | tail -1)
+            if [[ "${LAST}" == "" ]]; then
+              BUILD_NO=1
+            else
+              BUILD_NO=$(echo ${BUILD_NO} | cut -d '-' -f 2)
+            fi
+          fi
+          FOUND=$(git tag | grep "${BUILD_PREFIX}${BUILD_NO}$")
+          if [[ "${FOUND}" == "" ]]; then
+            echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO}
+            exit -1
+          fi
+          echo Deploying build ${BUILD_NO} to staging
+          echo "::set-output name=target-build::${BUILD_NO}"
+          echo "::set-output name=target-tag::${BUILD_PREFIX}${BUILD_NO}"
+        shell
+
+  deploy-to-staging:
+    runs-on: ubuntu-latest
+    needs: [ get-tag-number ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.get-tag.outputs.target-tag }}
+      - name: Tag build
+        run: |
+          echo "s/BUILD_NO/${{ needs.get-tag.outputs.target-build }}/"
+        shell: bash
+      - name: Deploy to staging
+        run: |
+          echo ENVIRONMENT=staging
+          echo REGION=us-east-1
+          ENVIRONMENT=staging REGION=us-east-1 --require-approval never
+        shell: bash
