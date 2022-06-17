@@ -41,7 +41,7 @@ jobs:
           echo Deploying build ${BUILD_NO} to staging
           echo "::set-output name=target-build::${BUILD_NO}"
           echo "::set-output name=target-tag::${BUILD_PREFIX}${BUILD_NO}"
-        shell
+        shell: bash
 
   deploy-to-staging:
     runs-on: ubuntu-latest
