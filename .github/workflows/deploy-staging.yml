@@ -1,4 +1,4 @@
-name: Deploy the latest build to staging
+name: Deploy to staging
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
           FOUND=$(git tag | grep "${BUILD_PREFIX}${BUILD_NO}$")
           if [[ "${FOUND}" == "" ]]; then
             echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO};
-            exit -1
+            echo "::error::Build ${BUILD_PREFIX}${BUILD_NO} doesn't exist"
           fi
           echo Deploying build ${BUILD_NO} to staging
           echo "::set-output name=target-build::${BUILD_NO}"
