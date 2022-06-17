@@ -39,8 +39,7 @@ jobs:
           echo Processing for BUILD_NO=${BUILD_NO}
           FOUND=$(git tag | grep "${BUILD_PREFIX}${BUILD_NO}$")
           if [[ "${FOUND}" == "" ]]; then
-            echo Unable to find build tag ${BUILD_PREFIX}${BUILD_NO};
-            echo "::error::Build ${BUILD_PREFIX}${BUILD_NO} doesn't exist"
+            echo What's going on?
           fi
           echo Deploying build ${BUILD_NO} to staging
           echo "::set-output name=target-build::${BUILD_NO}"
